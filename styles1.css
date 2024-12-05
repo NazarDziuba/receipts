@@ -824,14 +824,14 @@ header{
 .listMenu{
     display: grid;
     grid-row: 2/3;
-    grid-template: repeat(12, 8.3%) /1fr;
+    grid-template-rows: repeat(12, 1fr);
     gap: 10px;
     justify-content: space-around;
     align-content: space-around;
 }
 .listMenu img{
     width: 100%;
-    height: 100%;
+    height: 300px;
     object-fit: cover;
     border-radius: 5px;
     filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
