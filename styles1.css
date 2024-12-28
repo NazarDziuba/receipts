@@ -184,7 +184,7 @@ header{
 }
 .listMenu > *{
     width: 100%;
-    height: 100%;
+    height: 200px;
     object-fit: cover;
     border-radius: 5px;
     filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
@@ -237,12 +237,19 @@ header{
     height: 100%;
     object-fit: cover;
     border-radius: 5px;
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+}
+.randomPicDiv :hover{
+    margin-top: -30px;
+    transition: 0.5s;
+    rotate: 3deg;
 }
 .button{
     display: grid;
     grid-column: 1/2;
     grid-row: 2/3;
     align-items:flex-end;
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
 }
 .button button{
     align-self: flex-end;
@@ -254,6 +261,11 @@ header{
     font-family:'Nunito', serif;
     color: white;
     font-weight: 700;
+}
+.button :hover{
+    background-color: #3a4c00;
+    scale: 0.9;
+    transition: 0.2s;
 }
 .category{
     height: 100vh;
