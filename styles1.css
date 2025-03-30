@@ -79,12 +79,29 @@ header{
     width: 50px;
 }
 .divHeaderOption{
-    display: grid;
-    grid-column: 3/4;
-    grid-auto-flow: column;
+    display: flex;
+    gap: 120px;
     font-size: 18px;
     font-family: 'KyivTypeLight', serif;
     position: relative;
+}
+.headerOptionP{
+    display: inline-block;
+    position: relative;
+}
+.headerOptionP::after{
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 0;
+    left: 0;
+    background-color: black;
+    bottom: -5px;
+    display: inline-block;
+    transition: width 0.3s ease-in-out;
+}
+.headerOptionP:hover::after{
+    width: 100%;
 }
 .logo{
     grid-column: 4/5;
@@ -147,6 +164,10 @@ header{
 }
 .fpButton{
     font-family: 'KyivTypeRegular', serif;
+    transition: transform 0.3s ease;
+}
+.buttonFirst :hover {
+    transform: translateY(-15px);
 }
 .best{
     min-height: 100vh;
@@ -188,6 +209,10 @@ header{
     object-fit: cover;
     border-radius: 5px;
     filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 1));
+    transition: transform 0.3s ease;
+}
+.listImg:hover {
+    transform: translateY(-4px);
 }
 .random{
     min-height: 100vh;
@@ -238,10 +263,10 @@ header{
     object-fit: cover;
     border-radius: 5px;
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+    transition: transform 0.3s ease, rotate 0.3s ease;
 }
-.randomPicDiv :hover{
-    margin-top: -30px;
-    transition: 0.5s;
+.randomPic:hover{
+    transform: translateY(-30px);
     rotate: 3deg;
 }
 .button{
@@ -261,11 +286,10 @@ header{
     font-family:'Nunito', serif;
     color: white;
     font-weight: 700;
+    transition: transform 0.3s ease;
 }
-.button :hover{
-    background-color: #3a4c00;
-    scale: 0.9;
-    transition: 0.2s;
+.button button:hover{
+    transform: translateY(-15px);
 }
 .category{
     height: 100vh;
@@ -307,6 +331,9 @@ header{
     font-family: 'Nunito';
     font-weight: 300;
     color: white;
+}
+.categoryUl li:hover{
+    color: rgb(193, 193, 193);
 }
 footer{
     display: grid;
