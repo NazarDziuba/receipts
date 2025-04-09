@@ -68,19 +68,45 @@ header{
     z-index: 999;
     grid-area: header;
     filter: drop-shadow(2px 2px 2px black);
+    display: grid;
+    grid-template-columns: 10vw 1fr 10vw;
 }
 .header{
-    display: grid;
-    grid-template-columns: 1fr minmax(auto, 100px) minmax(auto, 700px) minmax(auto, 300px) 1fr;
+   /*display: grid;
+    grid-template-columns: 1fr minmax(auto, 100px) minmax(auto, 700px) minmax(auto, 300px) 1fr;*/
+    grid-column: 2/3;
+    display: flex;
     align-items: center;
+    
 }
 .search{
-    grid-column: 2/3;
+    /*grid-column: 2/3;*/
     width: 50px;
+    justify-self: end;
+    transform: translateX(-10px);
+    display: block;
+}
+.searchDiv{
+    display: none;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 20vw;
+}
+.searchInput{
+    width: 20vw;
+    height: 30px;
+    background-color: #D0B600;
+    border: solid 2px black;
+    border-radius: 3px;
+    padding-left: 2%;
+}
+.menuCloseBigDisplay{
+    align-self: center;
+    scale: 1.5;
 }
 .divHeaderOption{
     display: flex;
-    gap: 120px;
+    gap: 120px; /* Менять в JS при открытии поиска */
     font-size: 18px;
     font-family: 'KyivTypeLight', serif;
     position: relative;
@@ -88,6 +114,8 @@ header{
 .headerOptionP{
     display: inline-block;
     position: relative;
+    justify-self: start;
+    transform: translateX(40px);
 }
 .headerOptionP::after{
     content: "";
@@ -106,7 +134,8 @@ header{
 .logo{
     grid-column: 4/5;
     width: 50px;
-    justify-self: end;
+    justify-self: start;
+    margin: 6px 0;
 }
 .firstPage{
     grid-column: 1/-1;
