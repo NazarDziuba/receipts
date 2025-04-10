@@ -74,6 +74,7 @@ const fetchData = async () => {
         //console.log(recipeData);
         listImgFetch(recipeData);
         categoryNameFetch(recipeData);
+        randomRecipe(recipeData)
       } 
 
     catch (error) {
@@ -88,7 +89,7 @@ const listImgFetch = (recipeData) => {
 
   if(savedData){
     recipeData = JSON.parse(savedData);
-    console.log("Загружено: ", recipeData);
+    //console.log("Загружено: ", recipeData);
     showImages(recipeData);
   }
 
@@ -99,41 +100,67 @@ const listImgFetch = (recipeData) => {
 };
 
 const showImages = (recipes) => {
-    const listImgArr = Array.from(document.querySelectorAll('.listImg'));
-    recipes.sort((a, b) => b.aggregateLikes - a.aggregateLikes );
+    const listMenu = document.querySelector(".listMenu")
+    for (let i = 0; i<=12; i++){
+    if(recipes[i]){
+    const newImg = document.createElement("img");
+    newImg.setAttribute("alt", "рецепт");
+    newImg.src = recipes[i].image;
+
+    const link = document.createElement("a");
+    link.classList.add("listImg")
+    link.target = "_blank";
+    link.href = recipes[i].sourceUrl;
     
-    listImgArr.forEach((img, index) => {
-        if (recipes[index]) {
-          img.src = recipes[index].image;
-          console.log(`Index: ${index}; Likes: ${recipes[index].aggregateLikes};`);
-        }
-      })
+
+    link.appendChild(newImg);
+    listMenu.appendChild(link);
+    }
+}
+console.log(listMenu)
 };
 
 const categoryNameFetch = (recipes) => {
 
    const categoryUl = document.querySelector(".categoryUl");
-   for (let i = 1; i <= 20; i++){
+   for (let i = 0; i <= 20; i++){
    const newLi = document.createElement("li");
    categoryUl.appendChild(newLi);
    }
-   const alLi = categoryUl.querySelectorAll("li")
-   alLi.forEach((li, index) => {
+   const allLi = categoryUl.querySelectorAll("li");
 
+   const savedData = localStorage.getItem("recipes");
+
+   if(savedData){
+    recipes = JSON.parse(savedData);
+    //console.log("Загружено: ", recipes);
+    allLi.forEach((li, index) => {
+        if(recipes[index]){
+            li.textContent = recipes[index].title;
+            //console.log(recipes[index].title)
+        }
+        }
+        )
+   }
+   else{
+    allLi.forEach((li, index) => {
     if(recipes[index]){
         li.textContent = recipes[index].title;
         //console.log(recipes[index].title)
+        savedData = localStorage.setItem("recipes", JSON.stringify(recipes))
     }
+    }
+    )
+    }
+};
 
-   })
-
-   
-   
-   
-   
-    /*const recipeTitle = recipes.title;
-    console.log(recipeTitle);*/
-
+const randomRecipe = (recipe) => {
+    const randomBtn = document.getElementById("randomButton");
+    const randomPic = document.getElementById("randomPic");
+    randomBtn.addEventListener("click", () => {
+        const randonIndex = Math.floor(Math.random()*recipe.length);
+        randomPic.src = recipe[randonIndex].image;
+    })
 }
 
 
