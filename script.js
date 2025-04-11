@@ -71,7 +71,7 @@ const fetchData = async () => {
 
         const data = await response.json();
         recipeData = data.recipes;
-        //console.log(recipeData);
+        console.log(recipeData);
         listImgFetch(recipeData);
         categoryNameFetch(recipeData);
         randomRecipe(recipeData)
