@@ -123,22 +123,21 @@ console.log(listMenu)
 const categoryNameFetch = (recipes) => {
 
    const categoryUl = document.querySelector(".categoryUl");
-   for (let i = 1; i <= 20; i++){
-   const newLi = document.createElement("li");
-   categoryUl.appendChild(newLi);
-   }
-   const allLi = categoryUl.querySelectorAll("li");
-
    const savedData = localStorage.getItem("recipes");
 
    if(savedData){
     recipes = JSON.parse(savedData);
-    //console.log("Загружено: ", recipes);
-    allLi.forEach((li, index) => {
-        if(recipes[index]){
-            li.textContent = recipes[index].title;
-            //console.log(recipes[index].title)
-        }
+    recipes.slice(0, 20).forEach((recipes) => {
+        const newLi = document.createElement("li");
+        newLi.textContent = recipes.title;
+
+        const newA = document.createElement("a");
+        newA.href = recipes.sourceUrl;
+        newA.target = "_blank";
+        newA.classList.add("linkCategory");
+
+        categoryUl.appendChild(newA);
+        newA.appendChild(newLi);
         }
         )
    }
@@ -155,11 +154,20 @@ const categoryNameFetch = (recipes) => {
 };
 
 const randomRecipe = (recipe) => {
+    const randomPicDiv = document.querySelector(".randomPicDiv");
     const randomBtn = document.getElementById("randomButton");
-    const randomPic = document.getElementById("randomPic");
+    const randomPic = document.querySelector(".randomPic");
+    const newA = document.createElement("a");
+
+    newA.appendChild(randomPic);
+    randomPicDiv.appendChild(newA)
+    
     randomBtn.addEventListener("click", () => {
         const randonIndex = Math.floor(Math.random()*recipe.length);
         randomPic.src = recipe[randonIndex].image;
+
+        newA.href = recipe[randonIndex].sourceUrl;
+        newA.target = "_blank";
     })
 }
 

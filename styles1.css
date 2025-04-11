@@ -292,7 +292,7 @@ header{
 
 .randomPic{
     width: 100%;
-    height: 100%;
+    height: 90%;
     object-fit: cover;
     border-radius: 5px;
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
@@ -367,6 +367,9 @@ header{
 }
 .categoryUl li:hover{
     color: rgb(193, 193, 193);
+}
+.linkCategory{
+    text-decoration: none;
 }
 footer{
     display: grid;
