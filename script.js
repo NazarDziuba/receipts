@@ -101,7 +101,7 @@ const listImgFetch = (recipeData) => {
 
 const showImages = (recipes) => {
     const listMenu = document.querySelector(".listMenu")
-    for (let i = 0; i<=12; i++){
+    for (let i = 0; i<12; i++){
     if(recipes[i]){
     const newImg = document.createElement("img");
     newImg.setAttribute("alt", "рецепт");
@@ -123,7 +123,7 @@ console.log(listMenu)
 const categoryNameFetch = (recipes) => {
 
    const categoryUl = document.querySelector(".categoryUl");
-   for (let i = 0; i <= 20; i++){
+   for (let i = 1; i <= 20; i++){
    const newLi = document.createElement("li");
    categoryUl.appendChild(newLi);
    }
