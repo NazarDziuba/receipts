@@ -71,7 +71,7 @@ const fetchData = async () => {
 
         const data = await response.json();
         recipeData = data.recipes;
-        console.log(recipeData);
+        //console.log(recipeData);
         listImgFetch(recipeData);
         categoryNameFetch(recipeData);
         randomRecipe(recipeData)
@@ -101,23 +101,22 @@ const listImgFetch = (recipeData) => {
 
 const showImages = (recipes) => {
     const listMenu = document.querySelector(".listMenu")
-    for (let i = 0; i<12; i++){
-    if(recipes[i]){
+
+    const sortedLikes = recipes.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+    recipes.slice(0, 12).forEach((img, sortedLikes) => {
     const newImg = document.createElement("img");
     newImg.setAttribute("alt", "рецепт");
-    newImg.src = recipes[i].image;
+    newImg.src = recipes[sortedLikes].image;
 
     const link = document.createElement("a");
     link.classList.add("listImg")
     link.target = "_blank";
-    link.href = recipes[i].sourceUrl;
+    link.href = recipes[sortedLikes].sourceUrl;
     
 
     link.appendChild(newImg);
     listMenu.appendChild(link);
-    }
-}
-console.log(listMenu)
+    })
 };
 
 const categoryNameFetch = (recipes) => {
@@ -127,31 +126,25 @@ const categoryNameFetch = (recipes) => {
 
    if(savedData){
     recipes = JSON.parse(savedData);
-    recipes.slice(0, 20).forEach((recipes) => {
-        const newLi = document.createElement("li");
-        newLi.textContent = recipes.title;
-
-        const newA = document.createElement("a");
-        newA.href = recipes.sourceUrl;
-        newA.target = "_blank";
-        newA.classList.add("linkCategory");
-
-        categoryUl.appendChild(newA);
-        newA.appendChild(newLi);
-        }
-        )
    }
    else{
-    allLi.forEach((li, index) => {
-    if(recipes[index]){
-        li.textContent = recipes[index].title;
-        //console.log(recipes[index].title)
-        savedData = localStorage.setItem("recipes", JSON.stringify(recipes))
+      localStorage.setItem("recipes", JSON.stringify(recipes));
     }
-    }
-    )
-    }
-};
+    recipes.slice(0, 20).forEach((recipes) => {
+      const newLi = document.createElement("li");
+      newLi.textContent = recipes.title;
+
+      const newA = document.createElement("a");
+      newA.href = recipes.sourceUrl;
+      newA.target = "_blank";
+      newA.classList.add("linkCategory");
+
+      categoryUl.appendChild(newA);
+      newA.appendChild(newLi);
+    })
+    //console.log(Array.isArray(recipes));
+    
+  };
 
 const randomRecipe = (recipe) => {
     const randomPicDiv = document.querySelector(".randomPicDiv");
