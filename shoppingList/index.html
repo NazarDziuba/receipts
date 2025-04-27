@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-    <main>
+    <main id="mainId">
         <header class="header-container">
             <div class="divHeader-Text-Logo-Find">
                 <div class="divHeaderFind-Closed">
@@ -38,14 +38,14 @@
                     <div class="divAddProduct">
                         <div class="addProduct">
                             <div class="addProductInfo">
-                                <input type="text" placeholder="Введите название продукта" id="addProductInput" class="addProductInput">
-                                <input type="number" placeholder="Количество" id="addProductQuantityInput" class="addProductQuantityInput">
+                                <input type="text" placeholder="Введите название продукта" id="addProductInput" class="addProductInput" required>
+                                <input type="number" placeholder="Количество" id="addProductQuantityInput" class="addProductQuantityInput" min="0">
                                 <select name="selectAddProd" id="selectKgOrPieces" class="selectKgOrPieces">
-                                    <option value="kg"><span class="selectOptionKG">КГ</span></option>
-                                    <option value="pieces"><span class="selectOptionPieces">ШТ</span></option>
+                                    <option value="КГ"><span class="selectOptionKG">кг</span></option>
+                                    <option value="ШТ"><span class="selectOptionPieces">шт</span></option>
                                 </select>
                             </div>
-                            <button type="button" ><img src="icons8-add.png" alt="Add" class="addProductBtn"></button>
+                            <button type="button" id="addProductBTN"><img src="icons8-add.png" alt="Add" class="addProductBtn"></button>
                         </div>
                     </div>
                     <div class="divOption">
@@ -68,7 +68,7 @@
                             </div>
                             <div class="addCategory">
                                 <input type="text" name="addCategory" class="addCategoryInput" id="addCategoryInput" placeholder="Добавить категорию">
-                                <button type="button" ><img src="icons8-add.png" alt="" class="addCategoryBtn"></button>
+                                <button type="button" id="addCategoryButton"><img src="icons8-add.png" alt="" class="addCategoryBtn"></button>
                             </div>
                     </div>
                     <hr class="addProd">
@@ -77,7 +77,7 @@
                 <div class="divTable">
                     <table class="table">
                         <tbody class="tbody">
-                            <tr class="mainCell">
+                            <!--<tr class="mainCell">
                                 <td class="tableProductName">Куринное филе</td>
                                 <td class="tdBorder">1 кг</td>
                                 <td class="tableBTN"><button type="button"><img src="icons8-три-точки-24.png" alt=""></button></td>
@@ -126,7 +126,7 @@
                                 <td class="tableProductName">Яйца</td>
                                 <td class="tdBorder">10 шт</td>
                                 <td class="tableBTN"><button type="button"><img src="icons8-три-точки-24.png" alt=""></button></td>
-                            </tr>
+                            </tr>-->
                         </tbody>
                     </table>
                 </div>

@@ -384,16 +384,19 @@ input[type=radio]:checked::after{
 /*    TABLE    */
 .divTable{
     height: 100%;
+    max-height: 90vh;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     background-color: #FFFFFF;
     width: 70%;
-
+    overflow-y: auto;
+    background-color: #D9D9D9;
 }
 
 table{
     border-collapse: collapse;
     position: relative;
+    z-index: 0;
 }
 
 table::before{
@@ -408,13 +411,23 @@ table::before{
 
 .table{
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     border-top-right-radius: 10px;
     overflow: hidden;
 }
 
+.mainCell{
+    height: 10%;
+    
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    overflow: visible;
+}
+
 td{
     /*padding-left: 1rem;*/
+    height: 7.2vh;
     font-family: "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -423,21 +436,56 @@ td{
 }
 
 .mainCell:nth-child(2n+1){
-    background-color: #D9D9D9;
+    background-color: white;
 }
 
 .tableProductName{
     padding-left: 2rem;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    position: relative;
 }
+
+.tableProductNameCheck{
+    position: absolute;
+    right: 3vh;
+    width: 2vh;
+    height: 2vh;
+    background-color: #505C58;
+    transition: rotate 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
+
+.tableProductNameCheck:hover {
+    background-color: #DFC403;
+    rotate: 180deg;
+}
+
 
 .tableBTN{
     text-align: center;
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.tableBTN>button{
+    transition: rotate 0.3s ease-in-out;
+}
+
+.tableBTN>button:hover{
+    rotate: 90deg;
 }
 
 .tdBorder{
     position: relative;
     width: 15%;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .tdBorder::before{
@@ -471,7 +519,46 @@ button{
     cursor: pointer;
 }
 
+.clickMainDiv{
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: -0%;
+    
+    z-index: 999;
+}
 
+.clickMainDivPositionTop{
+    top: 0;
+}
+
+.clickMainDivPositionBottom{
+    bottom: 0;
+}
+
+.clickChildDiv{
+    height: 7.2vh;
+    display: flex;
+    align-items: center;
+    background-color: #DFC403;
+    
+    text-align: right;
+}
+
+.clickChildDiv:nth-child(even){
+    background-color: #d0b800;
+}
+
+.tableBTNButtonText{
+    text-align: left;
+    padding-left: 2vh;
+    font-size: 0.9rem;
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
 
 
 
