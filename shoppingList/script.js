@@ -7,7 +7,9 @@ const tbodyElement = document.querySelector('.tbody');
 
 let productListArr = [];
 
+let needToBuy = [];
 
+let alreadyBought = [];
 
 const saveLocalStorage = () => {localStorage.setItem('productListArr', JSON.stringify(productListArr))}
 
@@ -15,12 +17,20 @@ const loadProductsFromStorage = () => {
     const productSavedData = localStorage.getItem('productListArr');
     if(productSavedData){
         productListArr = JSON.parse(productSavedData)
-        renderProducts(productListArr.name, productListArr.quantity, productListArr['KG or PC'])
+        renderProducts(productListArr)
     }
     console.log(productListArr)
 }
 
-document.addEventListener("DOMContentLoaded", loadProductsFromStorage)
+document.addEventListener("DOMContentLoaded", () => {
+    loadProductsFromStorage();
+    getLocalStorageAlreadyBought();
+    getLocalStorageNeedToBuy();
+    //updateTableByRadio();
+})
+
+const addProductInput = document.querySelector('#addProductInput');
+addProductInput.innerText = "";
 
 const productRender = () => {
     const addProductInput = document.querySelector('#addProductInput');
@@ -39,19 +49,23 @@ const productRender = () => {
     
         productListArr.push({name: name, quantity: quantity, 'KG or PC': unit});
         saveLocalStorage();
-        renderProducts()
-
-    console.log(productListArr)
+        renderProducts(productListArr)
+        
+        
+    //console.log(productListArr)
     
 }
 
-addProductBTN.addEventListener('click', productRender)
 
-const renderProducts = () => {
+
+addProductBTN.addEventListener('click', productRender);
+
+
+const renderProducts = (Arr) => {
 
     tbodyElement.innerHTML = "";
     
-    productListArr.forEach((productListArr, index) =>{
+    Arr.forEach((product, index) =>{
 
         const mainCellTR = document.createElement('tr');
         mainCellTR.classList.add('mainCell');
@@ -61,14 +75,15 @@ const renderProducts = () => {
         const tableProductNameTD = document.createElement('td');
         tableProductNameTD.classList.add('tableProductName');
         const tableProductNameTDText = document.createElement('p');
-        tableProductNameTDText.innerText = productListArr.name
+        tableProductNameTDText.innerText = product.name
         const tableProductNameCheck = document.createElement('button');
         tableProductNameCheck.classList.add('tableProductNameCheck')
         tableProductNameCheck.setAttribute('type', 'button');
+        tableProductNameCheck.dataset.num = index;
 
         const tdBorderQuantity = document.createElement('td');
         tdBorderQuantity.classList.add('tdBorder');
-        tdBorderQuantity.innerText = `${productListArr.quantity} ${productListArr['KG or PC']}`;
+        tdBorderQuantity.innerText = `${product.quantity} ${product['KG or PC'].toLowerCase()}`;
 
         const tableBTN = document.createElement('td');
         tableBTN.classList.add('tableBTN');
@@ -81,6 +96,7 @@ const renderProducts = () => {
         //console.log(tableBTN)
         tableBTNImg.src = "icons8-три-точки-24.png";
         tableBTNImg.classList.add(`img${index}`)
+        //console.log(productListArr)
 
         
         /*const tableBTNImg = document.createElement('img');
@@ -95,6 +111,8 @@ const renderProducts = () => {
         tbodyElement.appendChild(mainCellTR)
 
         tableBTNButton.addEventListener('click', tableBTNButtonClick)
+
+        tableProductNameCheck.addEventListener('click', addInOptions)
     } )
 }
 
@@ -192,11 +210,84 @@ const tableBTNButtonClick = (e) => {
     }
 
 }
+const getLocalStorageAlreadyBought = () => {
+    const savedData = localStorage.getItem('alreadyBought');
+    if(savedData){
+        alreadyBought = JSON.parse(savedData);
+    }
+        //console.log(alreadyBought);
+}
+
+const saveLocalStorageAlreadyBought = () => {
+    localStorage.setItem('alreadyBought', JSON.stringify(alreadyBought));
+}
 
 
 
+const getLocalStorageNeedToBuy = () => {
+    const savedData = localStorage.getItem('needToBuy');
+    if(savedData){
+        needToBuy = JSON.parse(savedData);
+    }
+       //console.log(needToBuy);
+}
 
+const saveLocalStorageNeedToBuy = () => {
+    localStorage.setItem('needToBuy', JSON.stringify(needToBuy));
+}
 
+const addInOptions = (e) => {
+    const clickedButton = e.currentTarget;
+    const indexed = clickedButton.dataset.num;
 
+    const getTr = document.querySelectorAll('tr')[indexed];
+    const child = getTr.childNodes
 
+    const product = productListArr[indexed];
+    console.log(product);
 
+    needToBuy = [...productListArr];
+    needToBuy.splice(indexed, 1);
+    productListArr.splice(indexed, 1)
+    //console.log(needToBuy);
+
+    alreadyBought.push(
+    {   name: product.name, 
+        quantity: product.quantity,
+        'KG or PC': product['KG or PC']
+    }
+    );
+    //console.log(alreadyBought);
+    
+
+    renderProducts(productListArr);
+
+    saveLocalStorage();
+
+    saveLocalStorageAlreadyBought();
+
+    saveLocalStorageNeedToBuy();
+    console.log(productListArr)
+}
+
+/*const updateTableByRadio = () => {
+
+    if (allProductsRadio.checked){
+        renderProducts(productListArr);
+    } else if (needToBuyRadio.checked){
+        renderProducts(needToBuy)
+        console.log(needToBuy)
+    } else if (boughtRadio.checked){
+        renderProducts(alreadyBought)
+    }
+}*/
+
+allProductsRadio.addEventListener("click", () => {renderProducts(productListArr)})
+
+needToBuyRadio.addEventListener("click", ()=> {renderProducts(needToBuy)
+    console.log(needToBuy)
+})
+
+boughtRadio.addEventListener("click", () => {renderProducts(alreadyBought)
+    console.log(alreadyBought)
+})
