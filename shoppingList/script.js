@@ -11,6 +11,8 @@ let needToBuy = [];
 
 let alreadyBought = [];
 
+let categoriesArr = [];
+
 const saveLocalStorage = () => {localStorage.setItem('productListArr', JSON.stringify(productListArr))}
 
 const loadProductsFromStorage = () => {
@@ -48,18 +50,26 @@ const productRender = () => {
     }
     
         productListArr.push({name: name, quantity: quantity, 'KG or PC': unit});
+        needToBuy.push({name: name, quantity: quantity, 'KG or PC': unit});
+        console.log(needToBuy)
         saveLocalStorage();
-        renderProducts(productListArr)
+        saveLocalStorageNeedToBuy();
+        saveLocalStorageAlreadyBought()
+        renderProducts(needToBuy)
+
         
         
-    //console.log(productListArr)
+        
     
 }
 
-
-
-addProductBTN.addEventListener('click', productRender);
-
+addProductBTN.addEventListener('click', () => {
+    if (needToBuyRadio.checked) {
+        productRender();
+    } else {
+        alert('Добавление доступно только в режиме "Нужно купить".');
+    }
+});
 
 const renderProducts = (Arr) => {
 
@@ -76,10 +86,7 @@ const renderProducts = (Arr) => {
         tableProductNameTD.classList.add('tableProductName');
         const tableProductNameTDText = document.createElement('p');
         tableProductNameTDText.innerText = product.name
-        const tableProductNameCheck = document.createElement('button');
-        tableProductNameCheck.classList.add('tableProductNameCheck')
-        tableProductNameCheck.setAttribute('type', 'button');
-        tableProductNameCheck.dataset.num = index;
+        
 
         const tdBorderQuantity = document.createElement('td');
         tdBorderQuantity.classList.add('tdBorder');
@@ -98,12 +105,16 @@ const renderProducts = (Arr) => {
         tableBTNImg.classList.add(`img${index}`)
         //console.log(productListArr)
 
-        
-        /*const tableBTNImg = document.createElement('img');
-        tableBTNImg.src = "icons8-три-точки-24.png";
-        tableBTN.appendChild(tableBTNImg)*/
-        
+        if(Arr == needToBuy){
+        const tableProductNameCheck = document.createElement('button');
+        tableProductNameCheck.classList.add('tableProductNameCheck')
+        tableProductNameCheck.setAttribute('type', 'button');
+        tableProductNameCheck.dataset.num = index;
         tableProductNameTD.appendChild(tableProductNameCheck)
+        tableProductNameCheck.addEventListener('click', addInOptions)
+    }
+
+
         tableProductNameTD.appendChild(tableProductNameTDText)
         mainCellTR.appendChild(tableProductNameTD);
         mainCellTR.appendChild(tdBorderQuantity);
@@ -112,7 +123,7 @@ const renderProducts = (Arr) => {
 
         tableBTNButton.addEventListener('click', tableBTNButtonClick)
 
-        tableProductNameCheck.addEventListener('click', addInOptions)
+        
     } )
 }
 
@@ -173,7 +184,20 @@ const tableBTNButtonClick = (e) => {
     const index = clickedButton.dataset.index;
     const mainCell = document.querySelectorAll('.mainCell')[index];
     mainCell.appendChild(clickDiv);
-    console.log(mainCell);
+    //console.log(mainCell);
+
+    deleteButton.addEventListener("click", (e) => {
+        if(needToBuyRadio.checked){
+            deleteProduct(e, needToBuy);
+            console.log("Checked")
+        } else if (allProductsRadio.checked){
+            deleteProduct(e, productListArr);
+            console.log("Checked")
+        } else if (boughtRadio.checked){
+            deleteProduct(e, alreadyBought);
+            console.log("Checked")
+        }
+    })
 
     if(index){
         mainCell.style.position = "relative";
@@ -204,7 +228,6 @@ const tableBTNButtonClick = (e) => {
             if(e.target !== '<div class="clickChildDiv"></div>'){
             clickDiv.style.display = 'none';
             document.removeEventListener('click', documentClickHandler);
-            console.log(e)
         }
     
     }
@@ -215,7 +238,6 @@ const getLocalStorageAlreadyBought = () => {
     if(savedData){
         alreadyBought = JSON.parse(savedData);
     }
-        //console.log(alreadyBought);
 }
 
 const saveLocalStorageAlreadyBought = () => {
@@ -228,8 +250,8 @@ const getLocalStorageNeedToBuy = () => {
     const savedData = localStorage.getItem('needToBuy');
     if(savedData){
         needToBuy = JSON.parse(savedData);
+        renderProducts(needToBuy);
     }
-       //console.log(needToBuy);
 }
 
 const saveLocalStorageNeedToBuy = () => {
@@ -243,13 +265,12 @@ const addInOptions = (e) => {
     const getTr = document.querySelectorAll('tr')[indexed];
     const child = getTr.childNodes
 
-    const product = productListArr[indexed];
+    const product = needToBuy[indexed];
     console.log(product);
 
-    needToBuy = [...productListArr];
     needToBuy.splice(indexed, 1);
-    productListArr.splice(indexed, 1)
-    //console.log(needToBuy);
+
+    console.log(needToBuy);
 
     alreadyBought.push(
     {   name: product.name, 
@@ -257,10 +278,9 @@ const addInOptions = (e) => {
         'KG or PC': product['KG or PC']
     }
     );
-    //console.log(alreadyBought);
+    console.log(alreadyBought);
     
-
-    renderProducts(productListArr);
+    renderProducts(needToBuy);
 
     saveLocalStorage();
 
@@ -270,24 +290,86 @@ const addInOptions = (e) => {
     console.log(productListArr)
 }
 
-/*const updateTableByRadio = () => {
 
-    if (allProductsRadio.checked){
-        renderProducts(productListArr);
-    } else if (needToBuyRadio.checked){
-        renderProducts(needToBuy)
-        console.log(needToBuy)
-    } else if (boughtRadio.checked){
-        renderProducts(alreadyBought)
+needToBuyRadio.addEventListener("click", () =>{
+    renderProducts(needToBuy)
+} )
+
+
+allProductsRadio.addEventListener("click", () => {
+    renderProducts(productListArr)})
+
+
+
+boughtRadio.addEventListener("click", () => {
+    renderProducts(alreadyBought)})
+
+
+
+
+const deleteProduct = (e, Arr) => {
+    const index = e.currentTarget;
+    console.log(index);
+
+    const clickedTr = index.closest("tr");
+    const dataColumn = clickedTr.dataset.column;
+    const indexed = parseInt(dataColumn.replace('column', ''), 10);
+    console.log(indexed);
+
+    const removedItem = Arr[indexed]
+    console.log(removedItem)
+
+    const removeFromArray = (Arr) => {
+        const idx = Arr.findIndex(p => 
+            p.name === removedItem.name &&
+            p.quantity === removedItem.quantity &&
+            p['KG or PC'] === removedItem['KG or PC']
+            
+        );
+        console.log(idx);
+        if (idx !== -1){
+            Arr.splice(idx, 1)
+        }
     }
-}*/
 
-allProductsRadio.addEventListener("click", () => {renderProducts(productListArr)})
+    removeFromArray(productListArr);
+    removeFromArray(needToBuy);
+    removeFromArray(alreadyBought);
 
-needToBuyRadio.addEventListener("click", ()=> {renderProducts(needToBuy)
-    console.log(needToBuy)
-})
+    saveLocalStorage();
+    saveLocalStorageNeedToBuy();
+    saveLocalStorageAlreadyBought();
+    
+    renderProducts(Arr);
+    
+}
 
-boughtRadio.addEventListener("click", () => {renderProducts(alreadyBought)
-    console.log(alreadyBought)
-})
+const saveLocalStorageCategoriesArr = () => {
+    localStorage.setItem('categoriesArr', JSON.stringify(categoriesArr))
+}
+
+const getLocalStorageCategoriesArr = () => {
+    const savedData = localStorage.getItem('categoriesArr');
+    if(savedData){
+        categoriesArr = JSON.parse(savedData)
+    }
+};
+
+const addCategoryStorage = () => {
+    const addCategoryInput = document.getElementById('addCategoryInput');
+    const categoryName = addCategoryInput.value.trim();
+    categoriesArr.push([{'categories name': categoryName}]);
+    saveLocalStorageCategoriesArr()
+    addCategoryRender()
+}
+
+const addCategoryRender = () => {
+    getLocalStorageCategoriesArr()
+    console.log(categoriesArr)
+    categoriesArr.forEach(() => {
+
+    })
+}
+
+addCategoryButton.addEventListener("click", addCategoryStorage)
+

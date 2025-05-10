@@ -325,6 +325,7 @@ input[type=radio]:checked::after{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    overflow-y: auto;
 }
 
 .categoriesH1{
@@ -341,9 +342,10 @@ input[type=radio]:checked::after{
 
 .onlyCategories{
     height: 50%;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    row-gap: 0.5rem;
     font-family: "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 400;
