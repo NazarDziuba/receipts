@@ -413,7 +413,7 @@ table::before{
 
 .table{
     width: 100%;
-    /*height: 100%;*/
+    height: 100%;
     border-top-right-radius: 10px;
     overflow: hidden;
 }
@@ -562,7 +562,41 @@ button{
     font-style: normal;
 }
 
+.modalDivShadow{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
 
+.modalDiv{
+    position: fixed;
+    left: 35vw;
+    top: 35vh;
+    width: 30vw;
+    height: 30vh;
+    padding: 1rem;
+    border: solid 3px black;
+    border-radius: 10px;
+    word-wrap: break-word;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    row-gap: 0.5rem;
+}
+
+.modalCatButton{
+    font-size: 0.9rem;
+}
+
+.modalCatButton:hover{
+    color: #505C58;
+    text-decoration: underline;
+}
 
 
 /*    FOOTER    */
