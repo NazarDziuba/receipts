@@ -314,29 +314,6 @@ const addInOptions = (e) => {
 
     saveLocalStorageNeedToBuy();
     }
-    
-
-    /*const getTr = document.querySelectorAll('tr')[indexed];
-    const child = getTr.childNodes
-
-    const product = needToBuy[indexed];
-    console.log(product);
-
-    needToBuy.splice(indexed, 1);
-
-    console.log(needToBuy);
-
-    alreadyBought.push(product);
-    //console.log(alreadyBought);
-    
-    renderProducts(needToBuy);
-
-    saveLocalStorage();
-
-    saveLocalStorageAlreadyBought();
-
-    saveLocalStorageNeedToBuy();
-    //console.log(productListArr)*/
 }
 
 

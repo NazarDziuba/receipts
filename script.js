@@ -7,7 +7,8 @@ const searchField = document.querySelector('#searchFieldDiv')
 const searchBtnPhone = document.querySelector('#search')
 const closeSearchBtn = document.getElementById('menuCloseBigDisplay')
 const searchImg = document.getElementById('searchImg')
-const url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?tags=vegetarian,dessert&number=20"
+
+
 
 if(window.innerWidth < 800){
     headerBig.style.display = "none";
@@ -52,25 +53,43 @@ closeSearchBtn.addEventListener("click", () => {
     searchImg.style.display = "flex";
 });
 
-let recipeData = null;
+//=======================================================
+
+// КОНСТАНТЫ АПИ 
+
+//=======================================================
+
+const RANDOM_MEAL_URL   = 'https://www.themealdb.com/api/json/v1/1/random.php';
+const CATEGORY_LIST_URL = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
+const RECIPES_COUNT     = 20;  // сколько рандомных блюд загрузить
+
+//=======================================================
+
+// ХРАНИЛИЩЕ ДАННЫХ 
+
+//=======================================================
+
+let recipeData = []; // сюда положим массив загруженных блюд
 
 const fetchData = async () => {
 
     try {
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-            "x-rapidapi-key": "fce02e8d37msh974938717a83848p1f571djsn14117f60c9f0"
+        
+        const promises = Array.from( {length: RECIPES_COUNT}, () => 
+        fetch(RANDOM_MEAL_URL)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`Ошибка: ${response.status}`);
           }
-        });
+        return res.json()
+        })
+        .then(json => json.meals[0])
+         )
+         recipeData = await Promise.all(promises)
+        
 
-        if (!response.ok) {
-          throw new Error(`Ошибка: ${response.status}`);
-        }
-
-        const data = await response.json();
-        recipeData = data.recipes;
+        
+        
         //console.log(recipeData);
         listImgFetch(recipeData);
         categoryNameFetch(recipeData);
@@ -102,16 +121,15 @@ const listImgFetch = (recipeData) => {
 const showImages = (recipes) => {
     const listMenu = document.querySelector(".listMenu")
 
-    const sortedLikes = recipes.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
-    recipes.slice(0, 12).forEach((img, sortedLikes) => {
+    recipes.slice(0, 12).forEach((meal) => {
     const newImg = document.createElement("img");
     newImg.setAttribute("alt", "рецепт");
-    newImg.src = recipes[sortedLikes].image;
+    newImg.src = meal.strMealThumb;
 
     const link = document.createElement("a");
     link.classList.add("listImg")
     link.target = "_blank";
-    link.href = recipes[sortedLikes].sourceUrl;
+    link.href = meal.strSource;
     
 
     link.appendChild(newImg);
@@ -119,7 +137,12 @@ const showImages = (recipes) => {
     })
 };
 
-const categoryNameFetch = (recipes) => {
+async function categoryNameFetch(recipes) {
+  
+  try{
+    const res = await fetch(CATEGORY_LIST_URL);
+    if(!res.ok) throw new Error (`HTTP ${res.status}`);
+    const json = await res.json()
 
    const categoryUl = document.querySelector(".categoryUl");
    const savedData = localStorage.getItem("recipes");
@@ -130,18 +153,25 @@ const categoryNameFetch = (recipes) => {
    else{
       localStorage.setItem("recipes", JSON.stringify(recipes));
     }
-    recipes.slice(0, 20).forEach((recipes) => {
+    json.meals.forEach((meal) => {
+      const cat = meal.strCategory
+
       const newLi = document.createElement("li");
-      newLi.textContent = recipes.title;
+      newLi.textContent = cat;
 
       const newA = document.createElement("a");
-      newA.href = recipes.sourceUrl;
+      newA.href = `https://www.themealdb.com/filter.php?c=${encodeURIComponent(cat)}`;
       newA.target = "_blank";
       newA.classList.add("linkCategory");
 
       categoryUl.appendChild(newA);
       newA.appendChild(newLi);
     })
+  }
+  
+  catch (err) {
+    console.error('Ошибка при загрузке категорий:', err);
+  }
     //console.log(Array.isArray(recipes));
     
   };
@@ -157,9 +187,9 @@ const randomRecipe = (recipe) => {
     
     randomBtn.addEventListener("click", () => {
         const randonIndex = Math.floor(Math.random()*recipe.length);
-        randomPic.src = recipe[randonIndex].image;
+        randomPic.src = recipe[randonIndex].strMealThumb;
 
-        newA.href = recipe[randonIndex].sourceUrl;
+        newA.href = recipe[randonIndex].strSource;
         newA.target = "_blank";
     })
 }
